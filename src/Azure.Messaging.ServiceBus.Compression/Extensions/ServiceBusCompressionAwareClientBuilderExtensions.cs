@@ -1,8 +1,6 @@
-using System;
-using System.ComponentModel;
+using Azure.Core;
 using Azure.Core.Extensions;
 using Azure.Messaging.ServiceBus;
-using Azure.Messaging.ServiceBus.Administration;
 using Azure.Messaging.ServiceBus.Compression;
 
 // ReSharper disable once CheckNamespace
@@ -41,6 +39,17 @@ namespace Microsoft.Extensions.Azure
             Guard.AgainstNegativeOrZero(nameof(compressionThresholdLimitBytes), compressionThresholdLimitBytes);
             return builder.RegisterClientFactory<ServiceBusClient, ServiceBusClientOptions>(options => new CompressionAwareServiceBusClient(connectionString, options, new GzipCompressionConfiguration(compressionThresholdLimitBytes)));
         }
-        
+
+        public static IAzureClientBuilder<ServiceBusClient, ServiceBusClientOptions> AddCompressionAwareServiceBusClient<TBuilder>(this TBuilder builder, string fullyQualifiedNamespace, TokenCredential credential, CompressionConfiguration configuration)
+            where TBuilder : IAzureClientFactoryBuilder
+        {
+            return builder.RegisterClientFactory<ServiceBusClient, ServiceBusClientOptions>(options => new CompressionAwareServiceBusClient(fullyQualifiedNamespace, credential, configuration));
+        }
+
+        public static IAzureClientBuilder<ServiceBusClient, ServiceBusClientOptions> AddCompressionAwareServiceBusClient<TBuilder>(this TBuilder builder, string fullyQualifiedNamespace, TokenCredential credential, int compressionThresholdLimitBytes = GzipCompressionConfiguration.MinimumCompressionSize)
+            where TBuilder : IAzureClientFactoryBuilder
+        {
+            return builder.RegisterClientFactory<ServiceBusClient, ServiceBusClientOptions>(options => new CompressionAwareServiceBusClient(fullyQualifiedNamespace, credential, new GzipCompressionConfiguration(compressionThresholdLimitBytes)));
+        }
     }
 }

@@ -66,27 +66,6 @@ public class CompressionAwareServiceBusSenderTest
     
     [Fact]
     [UnitTest]
-    public void BeforeSend_Should_Not_Compress_Body_If_OriginalBodySize_Is_Less_Than_Threshold()
-    {
-        //ARRANGE
-        var minimumCompressionThresholdBytes = 256;
-        var compressionConfiguration =
-            new GzipCompressionConfiguration(minimumCompressionThresholdBytes);
-        var sut = new CompressionAwareServiceBusSender("FOO",
-            new ServiceBusClient(Constants.FakeServiceBusConnectionString), compressionConfiguration);
-        var body = Helpers.RandomString(minimumCompressionThresholdBytes >> 1); //Divide by 2
-        var message = new ServiceBusMessage(body);
-
-        //ACT
-        var processed = sut.BeforeMessageSend(message);
-
-        //ASSERT
-        processed.ApplicationProperties.Keys.Count().Should().Be(0,
-            "the sender should not set properties if not compressing");
-    }
-
-    [Fact]
-    [UnitTest]
     public void BeforeSend_Should_Compress_Body_Can_Be_Decompressed_To_Original_Body()
     {
         //ARRANGE

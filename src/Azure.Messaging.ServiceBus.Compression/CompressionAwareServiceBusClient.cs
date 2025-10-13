@@ -42,22 +42,19 @@ namespace Azure.Messaging.ServiceBus.Compression
         
         public override ServiceBusSender CreateSender(string queueOrTopicName)
         {
+            throw new System.Exception();
             return this.CreateCompressionAwareSender(queueOrTopicName, _configuration);
         }
 
+        // Jojo, ooooooo.
         public override ServiceBusSender CreateSender(string queueOrTopicName, ServiceBusSenderOptions options)
         {
-            return this.CreateCompressionAwareSender(queueOrTopicName,options, _configuration);
+            return this.CreateCompressionAwareSender(queueOrTopicName, options, _configuration);
         }
 
-        public override ServiceBusReceiver CreateReceiver(string queueName)
+        public override ServiceBusReceiver CreateReceiver(string queueName, ServiceBusReceiverOptions? options = null)
         {
-            return this.CreateCompressionAwareReceiver(queueName, _configuration);
-        }
-
-        public override ServiceBusReceiver CreateReceiver(string queueName, ServiceBusReceiverOptions? options)
-        {
-            return this.CreateCompressionAwareReceiver(queueName,_configuration, options);
+            return this.CreateCompressionAwareReceiver(queueName, _configuration, options);
         }
 
         public override ServiceBusReceiver CreateReceiver(string topicName, string subscriptionName)

@@ -158,4 +158,42 @@ public class CompressionAwareServiceBusSenderTest
             "the sender should not set properties if not compressing");
         receivedMessage.Body.ToString().Should().Be(body);
     }
+
+    // [Fact]
+    // [UnitTest]
+    // public void SentMessages_ShouldNotBeCompressedTwice()
+    // {
+    //     //ARRANGE
+    //     var minimumCompressionThresholdBytes = 256;
+    //     var compressionConfiguration =
+    //         new GzipCompressionConfiguration(minimumCompressionThresholdBytes);
+    //     var fakeServicebusClient = new ServiceBusClient(Constants.FakeServiceBusConnectionString);
+    //     var sut = new CompressionAwareServiceBusSender("FOO", fakeServicebusClient, compressionConfiguration);
+
+    //     var receiver = new CompressionAwareServiceBusReceiver("FOO", fakeServicebusClient, compressionConfiguration,
+    //         new ServiceBusReceiverOptions());
+
+    //     var originalBody = Helpers.RandomString(minimumCompressionThresholdBytes * 2);
+    //     var message = new ServiceBusMessage(originalBody);
+
+    //     //ACT
+    //     var processed = sut.BeforeMessageSend(message);
+
+    //     var fakeReceivedMessage =
+    //         ServiceBusModelFactory.ServiceBusReceivedMessage(processed.Body,
+    //             properties: processed.ApplicationProperties);
+    //     var decompressedMessage = receiver.HandleMessageReceived(fakeReceivedMessage);
+
+    //     //ASSERT
+    //     // If compressed the compression header is set
+    //     processed.ApplicationProperties[Headers.CompressionMethodName].ToString().Should().Be(
+    //         compressionConfiguration.CompressionMethodName,
+    //         "the name of the compression algorithm used should be set on the message");
+
+    //     processed.Body.ToString().Should().NotBe(originalBody,
+    //         "the body of the processed message should be compressed thus not like the original body");
+
+    //     decompressedMessage.Body.ToString().Should()
+    //         .Be(originalBody, "the decompressed body must be equal to the original body");
+    // }
 }
